@@ -111,7 +111,9 @@ namespace AESxWin
         {
             var count = 0;
             var paths = lstPaths.Items;
-            
+
+              
+
             this.Log("Encryption Started.");
 
             if (paths != null && paths.Count > 0)
@@ -181,10 +183,21 @@ namespace AESxWin
                 }
             }
 
-
+     
 
             this.Log($"Finished : {count} File(s) Encrypted.");
 
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "(*.txt)|*.txt|(*.*)|*.*";
+            saveFileDialog.FileName = "key" + DateTime.Now.ToString("yyyyMMddHHmm") + ".txt";
+            //将日期时间作为文件名
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName, true);
+                streamWriter.Write(lstExts.Text);
+                streamWriter.Close();
+            }
+            this.Log($"Finished : Key Save in file");
 
         }
 
@@ -289,6 +302,23 @@ namespace AESxWin
                 e.Effect = DragDropEffects.Copy;
             else
                 e.Effect = DragDropEffects.None;
+        }
+
+        private void lstExts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+           // txtPassword.BeginUpdate();
+            Random rd = new Random();  //无参即为使用系统时钟为种子
+            Console.WriteLine(rd.Next().ToString());
+            txtPassword.Text = rd.Next().ToString();
+
+            //txtPassword.EndUpdate();
+
+
         }
     }
 }
